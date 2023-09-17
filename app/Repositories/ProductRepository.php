@@ -28,13 +28,13 @@ class ProductRepository implements ProductRepositoryInterface
     // CREATE NEW PRODUCT AND SAVE DATA IN DATABASE
     public function createProduct(array $data)
     {
-        Product::insert([
-            'image' =>  $data['image'],
-            'title' =>  $data['title'],
-            'price' => $data['price'],
-            'description' => $data['description']
+        // Product::insert([
+        //     'title'         => $data['title'],
+        //     'price'         => $data['price'],
+        //     'description'   => $data['description'],
+        //     'image'         => $data['image'] ,
 
-        ]);
+        // ]);
         return Product::create($data);
     }
 

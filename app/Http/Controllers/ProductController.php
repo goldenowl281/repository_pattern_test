@@ -32,27 +32,30 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'price' => 'required',
             'title' => 'required',
         ]);
         $data = [
             'title'         => $request->title,
             'price'         => $request->price,
-            'description'   => $request->description,
-            'image'         => $request->image
+            'description'   => $request->description
         ];
 
-        if ($image = $request->file('image')) {
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
 
-            $name = time() . "." . $image->getClientOriginalName();
-            $image->move(public_path('images'), $name);
+            // Generate a unique name for the image
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-            $data['image'] = $image;
+            // Move the image to the public/images directory
+            $image->move(public_path('images'), $imageName);
+
+            // Set the image path in the data array
+            $data['image'] = $imageName;
         }
 
         $this->product->createProduct($data);
-
         return redirect()->route('product.index');
     }
 
